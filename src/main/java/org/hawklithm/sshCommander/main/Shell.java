@@ -21,6 +21,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -174,11 +176,21 @@ public class Shell{
 
         System.setIn(ts);
 
+        TextArea tfout = new TextArea();
+        TextFieldOutPutStreamer tsout = new TextFieldOutPutStreamer(tfout);
+
+        try {
+            System.setOut(new PrintStream(tsout,false,"utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
 
         mainFrame.add(headerLabel);
         mainFrame.add(controlPanel);
         mainFrame.add(statusLabel);
         mainFrame.add(tf);
+        mainFrame.add(tfout);
         mainFrame.setVisible(true);
     }
 
