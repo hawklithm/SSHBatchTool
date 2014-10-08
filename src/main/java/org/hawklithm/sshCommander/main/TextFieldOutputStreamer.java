@@ -1,24 +1,20 @@
 package org.hawklithm.sshCommander.main;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javafx.scene.control.TextArea;
+
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintStream;
 
 /**
  * Created by bluehawky on 14-10-7.
  */
-public class TextFieldOutPutStreamer extends OutputStream {
+public class TextFieldOutputStreamer extends OutputStream {
     private TextArea tf;
     private String str = null;
     private int pos = 0;
     private byte[] buf;
 
-    public TextFieldOutPutStreamer(TextArea jtf) {
+    public TextFieldOutputStreamer(TextArea jtf) {
         tf = jtf;
         buf = new byte[8123];
     }
@@ -33,7 +29,7 @@ public class TextFieldOutPutStreamer extends OutputStream {
 
     private void flushBuffer() throws IOException {
         if (pos > 0) {
-            tf.append(new String(buf,0,pos));
+            tf.appendText(new String(buf,0,pos));
             pos = 0;
         }
     }

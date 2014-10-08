@@ -8,13 +8,13 @@ import java.io.InputStream;
 /**
  * Created by bluehawky on 14-10-7.
  */
-class TextFieldStreamer extends InputStream implements ActionListener {
+class TextFieldInputStreamer extends InputStream implements ActionListener {
 
     private JTextField tf;
     private String str = null;
     private int pos = 0;
 
-    public TextFieldStreamer(JTextField jtf) {
+    public TextFieldInputStreamer(JTextField jtf) {
         tf = jtf;
     }
 
