@@ -1,34 +1,39 @@
 package org.hawklithm.sshCommander.main;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javafx.event.EventHandler;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+
 import java.io.InputStream;
 
 /**
  * Created by bluehawky on 14-10-7.
  */
-class TextFieldInputStreamer extends InputStream implements ActionListener {
+class TextFieldInputStreamer extends InputStream {
 
-    private JTextField tf;
+    private TextField tf;
     private String str = null;
     private int pos = 0;
 
-    public TextFieldInputStreamer(JTextField jtf) {
+    public TextFieldInputStreamer(TextField jtf) {
         tf = jtf;
-    }
+        tf.addEventHandler(KeyEvent.KEY_TYPED,new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if (KeyCode.ENTER.equals(keyEvent.getCode())){
+                    str = tf.getText() + "\n";
+                    pos = 0;
+                    tf.setText("");
+                    synchronized (this) {
+                        //maybe this should only notify() as multiple threads may
+                        //be waiting for input and they would now race for input
+                        this.notifyAll();
+                    }
+                }
 
-    //gets triggered everytime that "Enter" is pressed on the textfield
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        str = tf.getText() + "\n";
-        pos = 0;
-        tf.setText("");
-        synchronized (this) {
-            //maybe this should only notify() as multiple threads may
-            //be waiting for input and they would now race for input
-            this.notifyAll();
-        }
+            }
+        });
     }
 
 

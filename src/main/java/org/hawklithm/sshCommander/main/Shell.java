@@ -14,27 +14,23 @@ package org.hawklithm.sshCommander.main;
  *
  */
 import com.jcraft.jsch.*;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.swing.*;
 
-import static java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
-
-public class Shell{
+public class Shell extends Application {
     public static void main(String[] arg){
-        new Shell().shellOn(arg);
+        shellOn(arg);
+        launch(arg);
     }
-    public void shellOn(String[] arg){
+    public static void shellOn(String[] arg){
         try{
             JSch jsch=new JSch();
             for (int i = 0; i < 1024; i++) {
@@ -84,8 +80,8 @@ public class Shell{
             };
 
 
-            prepareGUI();
-            showTextAreaDemo();
+//            prepareGUI();
+//            showTextAreaDemo();
 
             session.setUserInfo(ui);
 
@@ -132,6 +128,7 @@ public class Shell{
         catch(Exception e){
             System.out.println(e);
         }
+
     }
 
 
@@ -139,8 +136,7 @@ public class Shell{
     private Label headerLabel;
     private Label statusLabel;
     private Panel controlPanel;
-    private byte[] commandBuffer = new byte[1024];
-    private ReentrantReadWriteLock reentrantLock = new ReentrantReadWriteLock();
+    private static byte[] commandBuffer = new byte[1024];
 
 
     private void showTextAreaDemo(){
@@ -169,21 +165,21 @@ public class Shell{
 
 
         JTextField tf = new JTextField();
-        TextFieldStreamer ts = new TextFieldStreamer(tf);
-        //maybe this next line should be done in the TextFieldStreamer ctor
+//        TextFieldInputStreamer ts = new TextFieldInputStreamer(tf);
+        //maybe this next line should be done in the TextFieldInputStreamer ctor
         //but that would cause a "leak a this from the ctor" warning
-        tf.addActionListener(ts);
+//        tf.addActionListener(ts);
 
         System.setIn(ts);
 
         TextArea tfout = new TextArea();
-        TextFieldOutPutStreamer tsout = new TextFieldOutPutStreamer(tfout);
+//        TextFieldOutputStreamer tsout = new TextFieldOutputStreamer(tfout);
 
-        try {
-            System.setOut(new PrintStream(tsout,false,"utf-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            System.setOut(new PrintStream(tsout,false,"utf-8"));
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
 
 
         mainFrame.add(headerLabel);
@@ -192,6 +188,14 @@ public class Shell{
         mainFrame.add(tf);
         mainFrame.add(tfout);
         mainFrame.setVisible(true);
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/shell.fxml"));
+        stage.setTitle("Hello World");
+        stage.setScene(new Scene(root, 800, 1024));
+        stage.show();
     }
 
 
