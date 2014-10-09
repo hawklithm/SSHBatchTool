@@ -1,4 +1,4 @@
-package org.hawklithm.sshCommander.main;
+package org.hawklithm.sshCommander.streamer;
 
 import javafx.scene.control.TextArea;
 
@@ -8,13 +8,13 @@ import java.io.OutputStream;
 /**
  * Created by bluehawky on 14-10-7.
  */
-public class TextFieldOutputStreamer extends OutputStream {
+public class TextAreaOutputStreamer extends OutputStream {
     private TextArea tf;
     private String str = null;
     private int pos = 0;
     private byte[] buf;
 
-    public TextFieldOutputStreamer(TextArea jtf) {
+    public TextAreaOutputStreamer(TextArea jtf) {
         tf = jtf;
         buf = new byte[8123];
     }

@@ -1,4 +1,4 @@
-package org.hawklithm.sshCommander.main;
+package org.hawklithm.sshCommander.streamer;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.TextField;
@@ -10,7 +10,7 @@ import java.io.InputStream;
 /**
  * Created by bluehawky on 14-10-7.
  */
-class TextFieldInputStreamer extends InputStream {
+public class TextFieldInputStreamer extends InputStream {
 
     private TextField tf;
     private String str = null;

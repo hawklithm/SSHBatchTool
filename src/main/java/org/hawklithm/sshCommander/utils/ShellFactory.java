@@ -9,6 +9,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
+import org.hawklithm.sshCommander.streamer.TextAreaOutputStreamer;
+import org.hawklithm.sshCommander.streamer.TextFieldInputStreamer;
 
 /**
  * Created by bluehawky on 14-10-7.
@@ -43,6 +45,42 @@ public class ShellFactory {
             this.tf = tf;
         }
     }
+    public static class StreamerShell extends Shell{
+        private TextFieldInputStreamer inputStreamer;
+        private TextAreaOutputStreamer outputStreamer;
+
+        public StreamerShell(){ }
+        public StreamerShell(SplitPane pane,TextFieldInputStreamer inputStreamer,TextAreaOutputStreamer outputStreamer){
+            this.inputStreamer = inputStreamer;
+            this.outputStreamer = outputStreamer;
+            super.setPane(pane);
+        }
+
+        public TextFieldInputStreamer getInputStreamer() {
+            return inputStreamer;
+        }
+
+        public void setInputStreamer(TextFieldInputStreamer inputStreamer) {
+            this.inputStreamer = inputStreamer;
+        }
+
+        public TextAreaOutputStreamer getOutputStreamer() {
+            return outputStreamer;
+        }
+
+        public void setOutputStreamer(TextAreaOutputStreamer outputStreamer) {
+            this.outputStreamer = outputStreamer;
+        }
+
+        public SplitPane getPane() {
+            return super.pane;
+        }
+
+        public void setPane(SplitPane pane) {
+            super.pane = pane;
+        }
+    }
+
     public static Shell getShell(){
         Shell shell = new Shell();
         SplitPane  pane = new SplitPane();
@@ -64,4 +102,13 @@ public class ShellFactory {
 
         return  shell;
     }
+
+    public static StreamerShell addStreamer(Shell shell){
+        StreamerShell streamerShell = new StreamerShell();
+        streamerShell.setPane(shell.getPane());
+        streamerShell.setInputStreamer(new TextFieldInputStreamer(shell.getTf()));
+        streamerShell.setOutputStreamer(new TextAreaOutputStreamer(shell.getTa()));
+        return streamerShell;
+    }
+
 }
